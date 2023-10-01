@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="105dp"
         android:layout_marginTop="36dp"
-        android:text="Acelerometro"
+        android:text="Acelerómetro"
         android:textColor="#FFFFFF"
         android:textSize="30sp"
         android:textStyle="bold" />

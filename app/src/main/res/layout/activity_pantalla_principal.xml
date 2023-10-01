@@ -35,7 +35,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginBottom="28dp"
         android:backgroundTint="#6C2436"
-        android:text="Cambiar de sensor"
+        android:text="Ir a Acelerómetro"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView" />
 
