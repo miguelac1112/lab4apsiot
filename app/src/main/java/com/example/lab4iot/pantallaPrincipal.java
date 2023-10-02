@@ -9,8 +9,10 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.LeadingMarginSpan;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.example.lab4iot.dto.Profile;
 import com.example.lab4iot.dto.Results;
@@ -127,7 +129,8 @@ public class pantallaPrincipal extends AppCompatActivity {
     }
 
     public void fetchProfileFromWs() {
-
+        ProgressBar progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
         Button btnSensor = findViewById(R.id.button2);
         Button btnAnadir = findViewById(R.id.button3);
         btnAnadir.setEnabled(false);
@@ -157,6 +160,8 @@ public class pantallaPrincipal extends AppCompatActivity {
                                 btnSensor.setEnabled(true);
                                 btnAnadir.setAlpha(1f);
                                 btnSensor.setAlpha(1f);
+                                ProgressBar progressBar = findViewById(R.id.progressBar);
+                                progressBar.setVisibility(View.GONE);
                             } else if (activeFragment instanceof MagnetometroFragment) {
                                 MagnetometroFragment magnetometroFragment = (MagnetometroFragment) activeFragment;
                                 magnetometroFragment.addContact(persona);
@@ -167,6 +172,8 @@ public class pantallaPrincipal extends AppCompatActivity {
                                 btnSensor.setEnabled(true);
                                 btnAnadir.setAlpha(1f);
                                 btnSensor.setAlpha(1f);
+                                ProgressBar progressBar = findViewById(R.id.progressBar);
+                                progressBar.setVisibility(View.GONE);
                             }
                         }
                     } else {
