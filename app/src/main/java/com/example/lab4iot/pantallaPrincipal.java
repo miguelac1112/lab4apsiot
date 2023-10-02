@@ -122,10 +122,18 @@ public class pantallaPrincipal extends AppCompatActivity {
     }
 
     private void addRandomContactToActiveFragment() {
+
         fetchProfileFromWs();
     }
 
     public void fetchProfileFromWs() {
+
+        Button btnSensor = findViewById(R.id.button2);
+        Button btnAnadir = findViewById(R.id.button3);
+        btnAnadir.setEnabled(false);
+        btnSensor.setEnabled(false);
+        btnAnadir.setAlpha(0.5f);
+        btnSensor.setAlpha(0.5f);
         randomUser.getResults().enqueue(new Callback<Profile>() {
             @Override
             public void onResponse(Call<Profile> call, Response<Profile> response) {
@@ -142,9 +150,23 @@ public class pantallaPrincipal extends AppCompatActivity {
                             if (activeFragment instanceof AcelerometroFragment) {
                                 AcelerometroFragment acelerometroFragment = (AcelerometroFragment) activeFragment;
                                 acelerometroFragment.addContact(persona);
+
+                                Button btnSensor = findViewById(R.id.button2);
+                                Button btnAnadir = findViewById(R.id.button3);
+                                btnAnadir.setEnabled(true);
+                                btnSensor.setEnabled(true);
+                                btnAnadir.setAlpha(1f);
+                                btnSensor.setAlpha(1f);
                             } else if (activeFragment instanceof MagnetometroFragment) {
                                 MagnetometroFragment magnetometroFragment = (MagnetometroFragment) activeFragment;
                                 magnetometroFragment.addContact(persona);
+
+                                Button btnSensor = findViewById(R.id.button2);
+                                Button btnAnadir = findViewById(R.id.button3);
+                                btnAnadir.setEnabled(true);
+                                btnSensor.setEnabled(true);
+                                btnAnadir.setAlpha(1f);
+                                btnSensor.setAlpha(1f);
                             }
                         }
                     } else {
