@@ -1,9 +1,13 @@
 package com.example.lab4iot;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.LeadingMarginSpan;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -86,24 +90,35 @@ public class pantallaPrincipal extends AppCompatActivity {
 
     private void showSensorDescriptionDialog() {
         Fragment activeFragment = getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView3);
-        String message;
-        String titulo;
 
         if (activeFragment instanceof AcelerometroFragment) {
-            titulo ="Detalles - Acelerómetro";
-            message = "Haga CLICK en Añadir para agregar contactos a su lista. Esta aplicación está utilizando el ACELEROMETRO de su dispositivo. De esta forma, la lista hará scroll hacia abajo, cuando agite su dispositivo.";
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Descripción del Acelerómetro");
+
+            SpannableString spannableString = new SpannableString("Haga CLICK en 'Añadir' para agregar contactos a su lista. Esta aplicación está utilizando el ACELERÓMETRO de su dispositivo.\n\nDe esta forma, la lista se hará scroll hacia abajo, cuando agite su dispositivo.");
+            spannableString.setSpan(new LeadingMarginSpan.Standard(100), spannableString.length() - 75, spannableString.length() - 47, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new LeadingMarginSpan.Standard(100), spannableString.length() - 46, spannableString.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+
+            builder.setMessage(spannableString);
+            builder.setPositiveButton("Aceptar", (dialog, which) -> dialog.dismiss());
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
         } else if (activeFragment instanceof MagnetometroFragment) {
-            titulo ="Detalles - MAGNETÓMETRO";
-            message = "Haga CLICK on Añadir para agregar contactos a su lista. Esta aplicación está utilizando el MAGNETÓMETRO de su dispositivo. De esta forma, la lista se mostrara al 100% cuando se apurte al NORTE. Caso contrario se desvanecerá";
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Detalles-Magnetómetro");
+
+            SpannableString spannableString = new SpannableString("Haga CLICK en 'Añadir' para agregar contactos a su lista. Esta aplicación está utilizando el MAGNETÓMETRO de su dispositivo.\n\nDe esta forma, la lista se mostrará al 100% cuando se apunte al NORTE. Caso contrario se desvanecerá...");
+            spannableString.setSpan(new LeadingMarginSpan.Standard(100), spannableString.length() - 75, spannableString.length() - 47, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new LeadingMarginSpan.Standard(100), spannableString.length() - 46, spannableString.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+
+            builder.setMessage(spannableString);
+            builder.setPositiveButton("Aceptar", (dialog, which) -> dialog.dismiss());
+            AlertDialog dialog = builder.create();
+            dialog.show();
         } else {
             return;
         }
-
-        new androidx.appcompat.app.AlertDialog.Builder(this)
-                .setTitle(titulo)
-                .setMessage(message)
-                .setPositiveButton("Aceptar", null)
-                .show();
     }
 
     private void addRandomContactToActiveFragment() {
@@ -125,7 +140,8 @@ public class pantallaPrincipal extends AppCompatActivity {
                             Fragment activeFragment = getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView3);
 
                             if (activeFragment instanceof AcelerometroFragment) {
-                                /*por mientras no hacer nada*/
+                                AcelerometroFragment acelerometroFragment = (AcelerometroFragment) activeFragment;
+                                acelerometroFragment.addContact(persona);
                             } else if (activeFragment instanceof MagnetometroFragment) {
                                 MagnetometroFragment magnetometroFragment = (MagnetometroFragment) activeFragment;
                                 magnetometroFragment.addContact(persona);

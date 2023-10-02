@@ -43,7 +43,7 @@ public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ResultsV
     public class ResultsViewHolder extends RecyclerView.ViewHolder{
         private ImageView ivPhoto;
         private TextView tvName, tvGender, tvCity, tvCountry, tvEmail, tvPhone;
-        private ImageButton deleteButton;
+        private ImageView deleteButton;
 
        public ResultsViewHolder(@NonNull View itemView){
 
@@ -55,6 +55,7 @@ public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ResultsV
            tvCountry = itemView.findViewById(R.id.textView17);
            tvEmail = itemView.findViewById(R.id.textView18);
            tvPhone = itemView.findViewById(R.id.textView19);
+           deleteButton = itemView.findViewById(R.id.imageView11);
        }
 
         public void bind(Persona persona) {
@@ -69,6 +70,16 @@ public class ResultsAdapter extends RecyclerView.Adapter<ResultsAdapter.ResultsV
             tvCountry.setText(persona.getCountry());
             tvEmail.setText(persona.getEmail());
             tvPhone.setText(persona.getPhone());
+
+            // Manejar la acción del botón de eliminación
+            deleteButton.setOnClickListener(view -> {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    // Eliminar el contacto de la lista y notificar al adaptador
+                    personaList.remove(position);
+                    notifyItemRemoved(position);
+                }
+            });
 
 
         }
