@@ -44,7 +44,7 @@ public class pantallaPrincipal extends AppCompatActivity {
         Button btnSensor = findViewById(R.id.button2);
         fragmentManager = getSupportFragmentManager();
         Button btnAnadir = findViewById(R.id.button3);
-        btnAnadir.setOnClickListener(v -> addRandomContactToActiveFragment());
+        btnAnadir.setOnClickListener(v -> fetchProfileFromWs());
 
         loadMagnetometroFragment();
 
@@ -118,17 +118,12 @@ public class pantallaPrincipal extends AppCompatActivity {
             builder.setPositiveButton("Aceptar", (dialog, which) -> dialog.dismiss());
             AlertDialog dialog = builder.create();
             dialog.show();
-        } else {
-            return;
         }
     }
 
-    private void addRandomContactToActiveFragment() {
-
-        fetchProfileFromWs();
-    }
-
     public void fetchProfileFromWs() {
+        ProgressBar progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
         Button btnSensor = findViewById(R.id.button2);
         Button btnAnadir = findViewById(R.id.button3);
         btnAnadir.setEnabled(false);
@@ -158,6 +153,8 @@ public class pantallaPrincipal extends AppCompatActivity {
                                 btnSensor.setEnabled(true);
                                 btnAnadir.setAlpha(1f);
                                 btnSensor.setAlpha(1f);
+                                ProgressBar progressBar = findViewById(R.id.progressBar);
+                                progressBar.setVisibility(View.GONE);
                             } else if (activeFragment instanceof MagnetometroFragment) {
                                 MagnetometroFragment magnetometroFragment = (MagnetometroFragment) activeFragment;
                                 magnetometroFragment.addContact(persona);
@@ -168,6 +165,8 @@ public class pantallaPrincipal extends AppCompatActivity {
                                 btnSensor.setEnabled(true);
                                 btnAnadir.setAlpha(1f);
                                 btnSensor.setAlpha(1f);
+                                ProgressBar progressBar = findViewById(R.id.progressBar);
+                                progressBar.setVisibility(View.GONE);
                             }
                         }
                     } else {
