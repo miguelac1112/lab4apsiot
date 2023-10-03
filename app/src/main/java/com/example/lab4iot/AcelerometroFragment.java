@@ -91,27 +91,6 @@ public class AcelerometroFragment extends Fragment implements SensorEventListene
         }
     }
 
-    public void updateContactList(List<Persona> personas) {
-        this.personaList.clear();
-        this.personaList.addAll(personas);
-        resultsAdapter.notifyDataSetChanged();
-    }
-
-    public void setContactList(List<Persona> personas) {
-        if (this.personaList != null) {
-            this.personaList.clear();
-            this.personaList.addAll(personas);
-            if (resultsAdapter != null) {
-                resultsAdapter.notifyDataSetChanged();
-            }
-        }
-    }
-
-    public void removeContact(int position) {
-        personaList.remove(position);
-        resultsAdapter.notifyItemRemoved(position);
-    }
-
     @Override
     public void onResume() {
         super.onResume();

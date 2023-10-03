@@ -1,4 +1,11 @@
 package com.example.lab4iot;
+import static android.content.Context.SENSOR_SERVICE;
+
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,11 +19,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MagnetometroFragment extends Fragment {
+public class MagnetometroFragment extends Fragment implements SensorEventListener {
 
     private List<Persona> personaList = new ArrayList<>();
     private RecyclerView recyclerView;
     private ResultsAdapter resultsAdapter;
+    private SensorManager sensorManager;
+    private Sensor magneticFieldSensor;
+    private float[] mGeomagnetic = new float[3];
 
     public MagnetometroFragment() {
     }
@@ -41,6 +51,9 @@ public class MagnetometroFragment extends Fragment {
         resultsAdapter = new ResultsAdapter(getContext(), personaList);
         recyclerView.setAdapter(resultsAdapter);
 
+        sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
+        magneticFieldSensor = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+
     }
 
     public void addContact(Persona persona) {
@@ -50,25 +63,39 @@ public class MagnetometroFragment extends Fragment {
         }
     }
 
-    public void updateContactList(List<Persona> personas) {
-        this.personaList.clear();
-        this.personaList.addAll(personas);
-        resultsAdapter.notifyDataSetChanged();
+    @Override
+    public void onResume() {
+        super.onResume();
+        sensorManager.registerListener(this, magneticFieldSensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
-    public void setContactList(List<Persona> personas) {
-        if (this.personaList != null) {
-            this.personaList.clear();
-            this.personaList.addAll(personas);
-            if (resultsAdapter != null) {
-                resultsAdapter.notifyDataSetChanged();
+    @Override
+    public void onPause() {
+        super.onPause();
+        sensorManager.unregisterListener(this);
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
+            mGeomagnetic = event.values;
+            float azimuth = (float) Math.toDegrees(mGeomagnetic[0]);
+            azimuth = (azimuth + 360) % 360;
+            float startAngle = 0.0f;
+            float endAngle = 180.0f;
+            float opacity = 1.0f;
+            if (azimuth >= startAngle && azimuth <= endAngle) {
+                float range = endAngle - startAngle;
+                float adjustedAngle = azimuth - startAngle;
+                opacity = 1.0f - (adjustedAngle / range);
             }
+            recyclerView.setAlpha(opacity);
         }
     }
 
-    public void removeContact(int position) {
-        personaList.remove(position);
-        resultsAdapter.notifyItemRemoved(position);
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
     }
+
 
 }
