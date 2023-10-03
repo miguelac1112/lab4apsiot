@@ -1,6 +1,4 @@
 package com.example.lab4iot;
-import static android.content.Context.SENSOR_SERVICE;
-
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
