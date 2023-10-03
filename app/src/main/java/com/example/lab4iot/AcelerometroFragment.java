@@ -1,5 +1,7 @@
 package com.example.lab4iot;
 
+import static android.content.Context.SENSOR_SERVICE;
+
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -13,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +70,17 @@ public class AcelerometroFragment extends Fragment implements SensorEventListene
 
         resultsAdapter = new ResultsAdapter(getContext(), personaList);
         recyclerView.setAdapter(resultsAdapter);
+
+        SensorManager sensorManager = (SensorManager) requireActivity().getSystemService(SENSOR_SERVICE);
+        if (sensorManager != null){
+            Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+            if (sensor!=null){
+                Log.d("msg-test", "si tengo acelerometro");
+                sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_UI);
+            }else{
+                Log.d("msg-test","no tengo acelerometro");
+            }
+        }
 
     }
 
@@ -126,6 +140,10 @@ public class AcelerometroFragment extends Fragment implements SensorEventListene
             // Agitación detectada, muestra un Toast con la aceleración
             String message = "Su aceleración: " + acceleration + " m/s^2";
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+
+            int itemCount = recyclerView.getAdapter().getItemCount();
+            if (itemCount>0)
+                recyclerView.smoothScrollToPosition(itemCount-1);
         }
 
         lastAcceleration = acceleration;
